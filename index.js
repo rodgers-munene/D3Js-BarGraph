@@ -29,6 +29,30 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
 
 
         var selection = d3.select("svg")
+         //? lets us create the scale
+        //* x-scale
+        const xScale = d3.scaleLinear()
+                         .domain([d3.min(years, (d) => d), d3.max(years, (d) => d)])
+                         .range([padding, w - padding])
+        //* y-scale
+        const yScale = d3.scaleLinear()
+                         .domain([0, d3.max(gdpData, (d) => d * 100)])
+                         .range([h - padding, padding])
+
+        //*x-axis
+        xAxis = d3.axisBottom(xScale)
+        selection.append("g")
+                 .attr("transform", "translate(0," + (h-padding) + ")")
+                 .attr("id", "x-axis")
+                 .call(xAxis)
+
+        //* y-axis
+        yAxis = d3.axisLeft(yScale)
+        selection.append("g")
+                 .attr("transform", "translate("+ padding + ",0)")
+                 .attr("id", "y-axis")
+                 .call(yAxis)
+                
         selection.selectAll("rect")
                  .data(dataObjects)
                  .enter().append("rect")
@@ -58,35 +82,12 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
                     })
                   .on("mouseout", function(d, i) {
                     d3.select(".tool-tip")
-                    .style("opacity", 0);
+                    .style("opacity", 0)
 });
         
         
         
-        //? lets us create the scale
-        //* x-scale
-        const xScale = d3.scaleLinear()
-                         .domain([d3.min(years, (d) => d), d3.max(years, (d) => d)])
-                         .range([padding, w - padding])
-        //* y-scale
-        const yScale = d3.scaleLinear()
-                         .domain([0, d3.max(gdpData, (d) => d * 100)])
-                         .range([h - padding, padding])
-
-        //*x-axis
-        xAxis = d3.axisBottom(xScale)
-        selection.append("g")
-                 .attr("transform", "translate(0," + (h-padding) + ")")
-                 .attr("id", "x-axis")
-                 .call(xAxis)
-
-        //* y-axis
-        yAxis = d3.axisLeft(yScale)
-        selection.append("g")
-                 .attr("transform", "translate("+ padding + ",0)")
-                 .attr("id", "y-axis")
-                 .call(yAxis)
-                
+       
 
       //? tooltip function 
       var div = d3.select("body").append("div")
